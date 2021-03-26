@@ -120,9 +120,28 @@ public function createCitizen($name, $gender, $add, $ph, $ward){
 }
 
 public function report(){
-   $sql = "SELECT c.*, s.*, L.*, W.* FROM citizens AS c INNER JOIN wards AS W ON c.ward = W.id INNER JOIN LGAs AS L  " 
-}
+    $str = '';
+/* $sql = "SELECT c.*, s.*, l.*, w.*, c.name AS cn,
+    w.name AS wn, s.name AS sn, l.name AS ln, FROM wards AS w RIGHT JOIN citizens AS c ON w.id = c.ward_id 
+    INNER JOIN lgas AS l ON w.lga_id = l.id INNER JOIN states AS s ON l.state_id = s.id";*/
 
+    $sql = "SELECT c.*, l.*, w.*, s.*, c.name AS cn, w.name AS wn, l.name AS ln, s.name AS sn FROM citizens AS c INNER JOIN wards AS w ON c.ward_id = w.id INNER JOIN lgas AS l ON w.lga_id = l.id INNER JOIN states AS s ON l.state_id = s.id";
+   try{
+   $sel = $this->connectToDb()->query($sql) OR $this->displayErrors($this->connectToDb()->error); 
+   if ($sel->num_rows > 0){
+       while($r = $sel->fetch_assoc()){
+           $str .= "<tr><td>" . $r['cn'] . "</td><td>" . $r['wn'] . "</td><td>" . $r['ln'] . "</td><td>" . $r['sn'] . "</td></tr>";
+           
+       }
+       return $str;
+   }else{
+       return $this->displayErrors("no record found");
+   }
+}
+catch (Exception $e){
+ die($e);
+}
+}
 
 
 }
