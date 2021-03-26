@@ -4,7 +4,7 @@ require('BaseClass.php');
 class PCom extends BaseClass{
 public $coN; public $con;
 public function connectToDb(){
-    $this->coN = $this->connect('test_db', 'JUne2995..', 'test_db');
+    $this->coN = $this->connect('test_db', '', 'test_db');
     return $this->coN;
 }
 public function assignCon(){
